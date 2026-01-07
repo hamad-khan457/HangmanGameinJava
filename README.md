@@ -1,32 +1,229 @@
-# 🎮 Word Guessing Game
+# 🎮 Advanced Hangman Game
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java"/>
+  <img src="https://img.shields.io/badge/API-Integration-green?style=for-the-badge" alt="API"/>
+  <img src="https://img.shields.io/badge/File_I/O-Enabled-blue?style=for-the-badge" alt="File I/O"/>
+  <img src="https://img.shields.io/badge/Status-Complete-success?style=for-the-badge" alt="Status"/>
+</div>
 
 ## 📝 Description
 
-A fun and interactive **Word Guessing Game** built in Java as my first semester programming project. Players try to guess hidden words letter by letter, similar to the classic Hangman game, with a scoring system based on performance!
+An **enhanced word guessing game** (Hangman) built in Java with advanced features including **API integration**, **persistent score tracking**, and **internet connectivity detection**. This project demonstrates core Java concepts along with modern programming practices like API consumption and file handling.
 
-## ✨ Features
+## ✨ Key Features
 
-- 🎯 **Random Word Selection** - Words are randomly chosen from a predefined list
-- 👤 **Personalized Experience** - Greets players by their first name
-- 💡 **Smart Hints** - Shows first and last letters of the word
-- 🎲 **Limited Chances** - Number of attempts based on word length
-- 📊 **Scoring System** - Performance-based scoring out of 10
-- 🔄 **Replay Option** - Play multiple rounds in one session
-- 📚 **Word Bank** - Includes programming and computer science related terms
+### 🌐 Smart Word Selection
+- **Dynamic API Integration** - Fetches random words from an external API when online
+- **Fallback System** - Uses local word bank when internet is unavailable
+- **Automatic Detection** - Checks internet connectivity before each game
 
-## 🎯 How to Play
+### 💾 Data Persistence
+- **Score Tracking** - Saves player names, words, and scores to a file
+- **Game History** - Maintains a record of all games played
+- **Persistent Storage** - Data survives program restarts
 
-1. **Enter Your Name** - The game will ask for your first name
-2. **View the Word** - You'll see the first and last letters with blanks in between (e.g., `j___a`)
-3. **Guess Letters** - Type one letter at a time to guess the word
-4. **Track Your Progress** - Monitor remaining chances and revealed letters
-5. **Win or Lose** - Complete the word before running out of chances
-6. **Play Again** - Choose to play another round or exit
+### 🎯 Gameplay Features
+- **Personalized Experience** - Greets players by name with proper capitalization
+- **Smart Hints** - Reveals first and last letters
+- **Dynamic Difficulty** - Chances based on word length
+- **Performance Scoring** - Calculate scores out of 10
+- **Replay Option** - Play multiple rounds seamlessly
+- **Error Handling** - Robust input validation and exception handling
 
-## 🎮 Gameplay Example
+## 🎮 How to Play
+
+1. **Enter Your Name** - Type your first name to begin
+2. **View the Word** - First and last letters are visible (e.g., `j___a`)
+3. **Guess Letters** - Enter one letter at a time
+4. **Track Progress** - Monitor remaining chances and score
+5. **Complete or Fail** - Either guess the word or run out of chances
+6. **Review Results** - Your score is automatically saved
+7. **Play Again** - Choose to continue or exit
+
+## 🎯 Gameplay Example
 
 ```
-Enter your first name: Hamad
+Enter your first name: hamad
+Word: p_______
+Chances left: 8
+Guess a letter: r
+Correct guess!
+Word: pr______
+Chances left: 8
+Guess a letter: o
+Correct guess!
+Word: pro_____
+Chances left: 8
+Guess a letter: g
+Correct guess!
+...
+Hamad  Congratulations! You guessed the word: program
+Your score: 8.75
+Player information saved.
+Do you want to play again? (1 for yes, 0 for no):
+```
+
+## 🏆 Scoring System
+
+```java
+Score = (Correct Guesses / Total Blanks) × 10
+```
+
+- **Maximum Score**: 10.0 points
+- **Perfect Game**: Guess without any incorrect attempts
+- **Score Penalty**: Each wrong guess reduces your final score
+- **Automatic Save**: All scores are saved to `hangman_scores.txt`
+
+## 🛠️ Technical Architecture
+
+### Core Components
+
+| Component | Functionality |
+|-----------|---------------|
+| `getRandomWordFromApi()` | Fetches words from external API |
+| `chooseRandomWordFromArray()` | Selects from local word bank |
+| `isInternetAvailable()` | Checks network connectivity |
+| `isCorrectGuess()` | Validates player input |
+| `savePlayerInfo()` | Persists game data to file |
+
+### Technology Stack
+
+- **Java Standard Library** - Core functionality
+- **java.net** - HTTP connections and API calls
+- **java.io** - File operations and data persistence
+- **java.util** - Utilities (Scanner, Random)
+- **Exception Handling** - InputMismatchException, IOException
+
+### API Integration
+
+```java
+API: https://random-word-api.herokuapp.com/word?number=1
+Method: GET
+Response: JSON array with random word
+Fallback: Local word array
+```
+
+### File Storage
+
+**File**: `hangman_scores.txt`  
+**Format**: `PlayerName : Word : Score`  
+**Mode**: Append (preserves history)
+
+```
+Hamad     :       java      :     10.0
+Ali       :       programming      :     7.5
+Sara      :       computer      :     8.333333
+```
+
+## 🚀 Installation & Setup
+
+### Prerequisites
+
+- **Java JDK** 8 or higher
+- **Internet Connection** (optional - for API features)
+- **Text Editor** or IDE (IntelliJ IDEA, Eclipse, VS Code)
+
+### Steps to Run
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/hamad-khan457/hangman-game.git
+   cd hangman-game
+   ```
+
+2. **Compile the Program**
+   ```bash
+   javac HangmanGame.java
+   ```
+
+3. **Run the Game**
+   ```bash
+   java HangmanGame
+   ```
+
+4. **View Saved Scores** (after playing)
+   ```bash
+   cat hangman_scores.txt
+   # or
+   type hangman_scores.txt  # Windows
+   ```
+
+## 💻 Project Structure
+
+```
+hangman-game/
+├── HangmanGame.java           # Main game file
+├── hangman_scores.txt         # Score storage (auto-generated)
+└── README.md                  # This file
+```
+
+### Code Architecture
+
+```java
+HangmanGame
+├── Constants
+│   ├── WORDS[]                // Local word bank
+│   ├── SCORE_FILE             // Score file path
+│   └── RANDOM_WORD_API        // API endpoint
+├── Main Game Loop
+│   └── main()                 // Entry point
+├── Game Logic
+│   ├── isCorrectGuess()       // Validates guesses
+│   └── getRandomWordFromApi() // Fetches API words
+├── Utility Methods
+│   ├── chooseRandomWordFromArray()
+│   └── isInternetAvailable()  // Connectivity check
+└── Data Persistence
+    └── savePlayerInfo()       // Saves to file
+```
+
+## 🎓 Learning Outcomes
+
+This project demonstrates proficiency in:
+
+### Core Java Concepts
+- ✅ **Object-Oriented Programming** - Classes and methods
+- ✅ **Control Flow** - Loops, conditionals, and logic
+- ✅ **Data Structures** - Arrays and StringBuilder
+- ✅ **Exception Handling** - Try-catch blocks
+
+### Advanced Topics
+- ✅ **API Integration** - HTTP requests and JSON parsing
+- ✅ **File I/O Operations** - Reading and writing files
+- ✅ **Network Programming** - URL connections and streams
+- ✅ **Error Handling** - Input validation and graceful failures
+- ✅ **Resource Management** - try-with-resources pattern
+
+## 📊 Feature Comparison
+
+| Feature | Basic Version | Advanced Version |
+|---------|---------------|------------------|
+| Word Source | Local Array | API + Fallback |
+| Score Tracking | Console Only | File Storage |
+| Internet Check | ❌ | ✅ |
+| Error Handling | Basic | Comprehensive |
+| Data Persistence | ❌ | ✅ |
+| Input Validation | Basic | Advanced |
+
+
+## 🐛 Error Handling
+
+The game handles various error scenarios:
+
+| Error Type | Handling |
+|------------|----------|
+| **Invalid Input** | InputMismatchException caught and handled |
+| **No Internet** | Automatic fallback to local words |
+| **File Write Error** | IOException caught, error message displayed |
+| **API Failure** | Falls back to local word array |
+| **Invalid File Path** | Creates new file if missing |
+
+## 📸 Sample Output
+
+### Successful Game
+```
+Enter your first name: hamad
 Word: j___
 Chances left: 2
 Guess a letter: a
@@ -35,117 +232,61 @@ Word: ja_a
 Chances left: 2
 Guess a letter: v
 Correct guess!
-Hamad Congratulations! You guessed the word: java
+Hamad  Congratulations! You guessed the word: java
 Your score: 10.0
+Player information saved.
+Do you want to play again? (1 for yes, 0 for no): 0
+Hamad  Goodbye!
+```
+
+### Failed Game
+```
+Word: p_______
+Chances left: 1
+Guess a letter: x
+Incorrect guess. Chances left: 0
+You did not guessed the word. The correct word is : program
+Player information saved.
 Do you want to play again? (1 for yes, 0 for no):
 ```
 
-## 🏆 Scoring System
+### Score File Content
+```
+Hamad     :       java      :     10.0
+Ali       :       python      :     6.0
+Sara      :       computer      :     8.333333
+Ahmed     :       algorithm      :     7.777778
+```
 
-- **Maximum Score**: 10 points
-- **Calculation**: `(Correct guesses / Total blanks) × 10`
-- **Perfect Score**: Guess all letters correctly without mistakes
-- **Score decreases** with each incorrect guess
+## 🔧 Configuration
 
-## 🛠️ Technical Details
+### Customizing Word Bank
 
-### Word Bank
-The game includes 8 programming-related words:
-- java
-- python
-- programming
-- computer
-- algorithm
-- developer
-- keyboard
-- language
-
-### Key Components
-
-| Component | Description |
-|-----------|-------------|
-| `WORDS[]` | Array storing available words |
-| `chooseRandomWord()` | Randomly selects a word from the array |
-| `isCorrectGuess()` | Validates player's guess and updates the word |
-| **Chances System** | Based on word length minus 2 |
-| **StringBuilder** | Efficiently manages the guessed word display |
-
-## 🚀 How to Run
-
-### Prerequisites
-- Java Development Kit (JDK) 8 or higher
-- Any Java IDE (Eclipse, IntelliJ IDEA, VS Code) or Terminal
-
-### Steps
-
-1. **Clone or Download** the repository
-   ```bash
-   git clone https://github.com/hamad-khan457/word-guessing-game.git
-   ```
-
-2. **Navigate to the project directory**
-   ```bash
-   cd word-guessing-game
-   ```
-
-3. **Compile the program**
-   ```bash
-   javac FinalWordGame.java
-   ```
-
-4. **Run the game**
-   ```bash
-   java FinalWordGame
-   ```
-
-## 💻 Code Structure
+Edit the `WORDS` array to add your own words:
 
 ```java
-FinalWordGame
-├── WORDS[]                    // Word bank array
-├── main()                     // Main game loop
-├── chooseRandomWord()         // Random word selector
-└── isCorrectGuess()           // Guess validation method
+private static final String[] WORDS = {
+    "java", "python", "programming", 
+    "computer", "algorithm", "developer",
+    // Add your words here
+    "machine", "learning", "artificial"
+};
 ```
 
-## 🎓 Learning Outcomes
+### Changing API Source
 
-This project helped me learn and implement:
+Modify the API URL constant:
 
-- ✅ **Java Basics** - Variables, data types, and operators
-- ✅ **Control Structures** - Loops (while, for) and conditional statements
-- ✅ **Arrays** - Storing and accessing data
-- ✅ **String Manipulation** - StringBuilder and String methods
-- ✅ **Methods** - Creating and calling static methods
-- ✅ **User Input** - Scanner class for user interaction
-- ✅ **Random Number Generation** - Using Random class
-- ✅ **Game Logic** - Implementing game flow and scoring
-
-
-## 📸 Screenshots
-
-### Game Start
-```
-Enter your first name: Hamad
-Word: p______
-Chances left: 5
-Guess a letter:
+```java
+private static final String RANDOM_WORD_API = 
+    "https://your-api-url.com/word?number=1";
 ```
 
-### During Gameplay
-```
-Word: p_o___m
-Chances left: 3
-Guess a letter: r
-Correct guess!
-```
+### Custom Score File Location
 
-### Victory Screen
-```
-Hamad Congratulations! You guessed the word: program
-Your score: 8.5
-Do you want to play again? (1 for yes, 0 for no):
-```
+Change the file path:
 
-Made with ❤️ by Hamad Khan | First Semester Project</p>
-</div>
+```java
+private static final String SCORE_FILE = 
+    "/path/to/your/scores.txt";
+```
